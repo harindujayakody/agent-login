@@ -1,0 +1,46 @@
+{
+  "name": "multi-browser",
+  "productName": "Multi Browser",
+  "version": "0.1.0",
+  "description": "Manage isolated Chromium browser profiles from one dashboard",
+  "author": "Infiax",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win nsis"
+  },
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "electron": "^45.0.0",
+    "electron-builder": "^26.18.0"
+  },
+  "dependencies": {
+    "ws": "^8.22.0"
+  },
+  "build": {
+    "appId": "com.infiax.multibrowser",
+    "productName": "Multi Browser",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Multi Browser",
+      "deleteAppDataOnUninstall": false
+    }
+  }
+}

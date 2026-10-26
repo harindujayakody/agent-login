@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>Multi Browser</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><span class="logo">◧</span> Multi Browser</div>
+    <input id="search" type="search" placeholder="Search profiles…">
+    <div class="topbar-actions">
+      <button id="btn-settings" class="ghost">Settings</button>
+      <button id="btn-new" class="primary">+ New profile</button>
+    </div>
+  </header>
+
+  <main>
+    <div class="stats" id="stats"></div>
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty hidden">
+      <h2>No profiles yet</h2>
+      <p>Create one profile per person or account. Each opens in its own isolated browser with separate cookies, logins and history.</p>
+      <button class="primary" id="btn-new-empty">+ Create first profile</button>
+    </div>
+  </main>
+
+  <!-- Profile editor -->
+  <dialog id="editor">
+    <form id="editor-form" method="dialog">
+      <h2 id="editor-title">New profile</h2>
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="general">General</button>
+        <button type="button" class="tab" data-tab="network">Proxy</button>
+        <button type="button" class="tab" data-tab="identity">Browser identity</button>
+      </div>
+
+      <section class="tab-panel" data-panel="general">
+        <label>Profile name <input name="name" required placeholder="e.g. Mom – Pinterest"></label>
+        <div class="row">
+          <label>Owner / group <input name="owner" placeholder="e.g. Mom"></label>
+          <label class="color-label">Color <input name="color" type="color" value="#e60023"></label>
+        </div>
+        <label>Start page <input name="startUrl" placeholder="https://www.pinterest.com"></label>
+        <label>Notes <textarea name="notes" rows="3" placeholder="Anything to remember about this profile"></textarea></label>
+      </section>
+
+      <section class="tab-panel hidden" data-panel="network">
+        <div class="row">
+          <label>Type
+            <select name="proxyType">
+              <option value="none">No proxy (direct)</option>
+              <option value="http">HTTP</option>
+              <option value="https">HTTPS</option>
+              <option value="socks5">SOCKS5</option>
+              <option value="socks4">SOCKS4</option>
+            </select>
+          </label>
+          <label>Host <input name="proxyHost" placeholder="1.2.3.4"></label>
+          <label class="narrow">Port <input name="proxyPort" type="number" min="1" max="65535"></label>
+        </div>
+        <p class="hint">HTTP/HTTPS proxies with a username/password show a sign-in prompt in the browser the first time. SOCKS proxies must be IP-whitelisted (Chrome can't send SOCKS passwords). WebRTC is locked to the proxy so it can't leak your real IP.</p>
+      </section>
+
+      <section class="tab-panel hidden" data-panel="identity">
+        <div class="row">
+          <label>Language
+            <input name="language" list="langs" placeholder="Default (system)">
+            <datalist id="langs">
+              <option value="en-US"><option value="en-GB"><option value="hi-IN"><option value="de-DE"><option value="fr-FR"><option value="es-ES"><option value="ja-JP">
+            </datalist>
+          </label>
+          <label>Timezone
+            <input name="timezone" list="tzs" placeholder="Default (system)">
+            <datalist id="tzs">
+              <option value="America/New_York"><option value="America/Los_Angeles"><option value="Europe/London"><option value="Europe/Berlin"><option value="Asia/Kolkata"><option value="Asia/Tokyo">
+            </datalist>
+          </label>
+        </div>
+        <div class="row">
+          <label>Window width <input name="windowWidth" type="number" min="400" placeholder="auto"></label>
+          <label>Window height <input name="windowHeight" type="number" min="300" placeholder="auto"></label>
+        </div>
+        <label>User agent (advanced) <input name="userAgent" placeholder="Leave empty to use the browser's real one (recommended)"></label>
+        <p class="hint">Tip: leaving identity fields on default is the most consistent. Mismatched values (e.g. a Mac user agent on Windows) look more suspicious to websites, not less.</p>
+      </section>
+
+      <div class="dialog-actions">
+        <button type="button" class="ghost" id="editor-cancel">Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Settings -->
+  <dialog id="settings">
+    <form id="settings-form" method="dialog">
+      <h2>Settings</h2>
+      <label>Browser used for profiles
+        <select id="browser-select"></select>
+      </label>
+      <div class="row">
+        <label>Custom path <input id="browser-path" placeholder="Path to chrome.exe / msedge.exe"></label>
+        <button type="button" class="ghost align-end" id="browser-browse">Browse…</button>
+      </div>
+      <p class="hint">Profile data folder: <code id="data-dir"></code></p>
+      <div class="dialog-actions">
+        <button type="button" class="ghost" id="settings-cancel">Cancel</button>
+        <button type="submit" class="primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="renderer.js"></script>
+</body>
+</html>
