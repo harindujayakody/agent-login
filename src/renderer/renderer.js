@@ -1,4 +1,5 @@
-const api = window.api;
+// `api` is the global exposed by preload.js via contextBridge. It can't be
+// redeclared here: a top-level `const api` throws and stops the whole script.
 const $ = (sel) => document.querySelector(sel);
 
 let profiles = [];

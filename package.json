@@ -1,7 +1,7 @@
 {
   "name": "multi-browser",
   "productName": "Multi Browser",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Manage isolated Chromium browser profiles from one dashboard",
   "author": "Infiax",
   "main": "src/main.js",
