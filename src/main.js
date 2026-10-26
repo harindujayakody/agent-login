@@ -24,7 +24,7 @@ function createWindow() {
     height: 780,
     minWidth: 820,
     minHeight: 560,
-    backgroundColor: '#0f1115',
+    backgroundColor: '#f4f6fb',
     title: 'Multi Browser',
     autoHideMenuBar: true,
     webPreferences: {

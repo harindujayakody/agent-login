@@ -96,7 +96,7 @@ function sanitize(input) {
   return {
     name: str(input.name) || 'Untitled profile',
     owner: str(input.owner),
-    color: str(input.color) || '#e60023',
+    color: str(input.color) || '#2f6bff',
     notes: str(input.notes),
     startUrl: str(input.startUrl),
     language: str(input.language),

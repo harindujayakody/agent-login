@@ -6,8 +6,8 @@ Status: ✅ done · 🟡 partial · ⬜ planned
 
 | Feature | What it means | Status |
 | --- | --- | --- |
-| **Profile dashboard** | Organizes profiles using names, folders, tags, notes, and search. | 🟡 Names, owner groups, colors, notes and search work. Tags and nested folders are planned. |
-| **Bulk actions** | Creates, launches, edits, or organizes multiple profiles together. | ⬜ Planned: multi-select, bulk launch/close, bulk proxy import, bulk move to group. |
+| **Profile dashboard** | Organizes profiles using names, folders, tags, notes, and search. | 🟡 Names, sidebar groups, colors, notes, search and a profile table work. Tags and nested folders are planned. |
+| **Bulk actions** | Creates, launches, edits, or organizes multiple profiles together. | 🟡 Multi-select with bulk start/stop works. Bulk proxy import, bulk edit and bulk move to group are planned. |
 | **Isolated browser profiles** | Keeps each profile's cookies, logins, and browsing storage separate. | ✅ Each profile runs with its own `--user-data-dir`. |
 | **Browser fingerprint management** | Controls the browser and device information websites can observe, such as operating system, screen size, language, and graphics-related signals. | 🟡 Language, timezone, window size and user agent work. OS, screen, fonts and graphics (canvas/WebGL) signals are planned. |
 | **Automation and APIs** | Lets scripts create and launch profiles and automate browser tasks. | ⬜ Planned: local REST API plus a DevTools (CDP) endpoint per profile for Puppeteer/Playwright. |
@@ -38,7 +38,7 @@ Each profile can also have its own fingerprint and proxy settings, so websites s
 
 ## Next up
 
-1. Tags and bulk actions on the dashboard
+1. Tags, bulk edit and bulk proxy import on the dashboard
 2. Per-profile download folder
 3. Local proxy bridge for SOCKS5 with username/password
 4. Screen, OS and graphics fingerprint settings

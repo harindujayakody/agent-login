@@ -7,24 +7,73 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand"><span class="logo">◧</span> Multi Browser</div>
-    <input id="search" type="search" placeholder="Search profiles…">
-    <div class="topbar-actions">
-      <button id="btn-settings" class="ghost">Settings</button>
-      <button id="btn-new" class="primary">+ New profile</button>
-    </div>
-  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="logo"><i></i><i></i><i></i></span>
+        <span>Multi Browser</span>
+      </div>
+      <button id="btn-new" class="primary block">+ Create profile</button>
 
-  <main>
-    <div class="stats" id="stats"></div>
-    <div id="grid" class="grid"></div>
-    <div id="empty" class="empty hidden">
-      <h2>No profiles yet</h2>
-      <p>Create one profile per person or account. Each opens in its own isolated browser with separate cookies, logins and history.</p>
-      <button class="primary" id="btn-new-empty">+ Create first profile</button>
-    </div>
-  </main>
+      <nav class="nav">
+        <div class="nav-label">Profiles</div>
+        <div id="groups"></div>
+      </nav>
+
+      <div class="sidebar-foot">
+        <button id="btn-settings" class="nav-item">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7Zm7.43-2.53a7.8 7.8 0 0 0 0-1.94l2.11-1.65-2-3.46-2.49 1a7.3 7.3 0 0 0-1.68-.98L15 3.3h-4l-.37 2.64c-.6.25-1.17.58-1.68.98l-2.49-1-2 3.46 2.11 1.65a7.8 7.8 0 0 0 0 1.94L4.46 14.6l2 3.46 2.49-1c.51.4 1.08.73 1.68.98L11 20.7h4l.37-2.64c.6-.25 1.17-.58 1.68-.98l2.49 1 2-3.46-2.11-1.65Z"/></svg>
+          Settings
+        </button>
+      </div>
+    </aside>
+
+    <main class="content">
+      <header class="page-head">
+        <div>
+          <h1 id="page-title">All profiles</h1>
+          <div class="sub" id="page-sub"></div>
+        </div>
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M10 4a6 6 0 1 0 3.74 10.69l4.78 4.79 1.42-1.42-4.79-4.78A6 6 0 0 0 10 4Zm0 2a4 4 0 1 1 0 8 4 4 0 0 1 0-8Z"/></svg>
+          <input id="search" type="search" placeholder="Search by name, group, notes…">
+        </div>
+      </header>
+
+      <div id="bulkbar" class="bulkbar hidden">
+        <span id="bulk-count"></span>
+        <button id="bulk-start" class="primary sm">Start selected</button>
+        <button id="bulk-stop" class="sm">Stop selected</button>
+        <button id="bulk-clear" class="link sm">Clear selection</button>
+      </div>
+
+      <div class="table-card" id="table-card">
+        <table class="profiles">
+          <thead>
+            <tr>
+              <th class="col-check"><input type="checkbox" id="check-all" aria-label="Select all"></th>
+              <th>Profile</th>
+              <th>Group</th>
+              <th>Proxy</th>
+              <th class="col-start">Start page</th>
+              <th class="col-last">Last opened</th>
+              <th>Status</th>
+              <th class="col-actions"></th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <div id="no-match" class="no-match hidden">No profiles match your search.</div>
+      </div>
+
+      <div id="empty" class="empty hidden">
+        <div class="empty-art"><i></i><i></i><i></i></div>
+        <h2>No profiles yet</h2>
+        <p>Create one profile per person or account. Each opens in its own isolated browser with separate cookies, logins and history.</p>
+        <button class="primary" id="btn-new-empty">+ Create your first profile</button>
+      </div>
+    </main>
+  </div>
 
   <!-- Profile editor -->
   <dialog id="editor">
@@ -40,7 +89,7 @@
         <label>Profile name <input name="name" required placeholder="e.g. Mom – Pinterest"></label>
         <div class="row">
           <label>Owner / group <input name="owner" placeholder="e.g. Mom"></label>
-          <label class="color-label">Color <input name="color" type="color" value="#e60023"></label>
+          <label class="color-label">Color <input name="color" type="color" value="#2f6bff"></label>
         </div>
         <label>Start page <input name="startUrl" placeholder="https://www.pinterest.com"></label>
         <label>Notes <textarea name="notes" rows="3" placeholder="Anything to remember about this profile"></textarea></label>
