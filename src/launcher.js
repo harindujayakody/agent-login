@@ -2,7 +2,7 @@
 const fs = require('fs');
 const path = require('path');
 const { spawn } = require('child_process');
-const { attachOverrides, clearDevToolsPort } = require('./cdp');
+const { attachOverrides } = require('./cdp');
 
 const CANDIDATES = [
   ['Google Chrome', '%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe'],
@@ -58,7 +58,9 @@ function buildArgs(profile, dataDir) {
   if (profile.timezone) {
     // Timezone is applied over DevTools (see cdp.js), which also opens the start page
     // once the override is in place, so the first page load already sees it.
-    args.push('--remote-debugging-port=0', 'about:blank');
+    // --remote-debugging-pipe carries DevTools over an anonymous pipe instead of
+    // a TCP port, so no other local process can connect to this browser.
+    args.push('--remote-debugging-pipe', 'about:blank');
   } else if (profile.startUrl) {
     args.push(profile.startUrl);
   }
@@ -85,22 +87,25 @@ class Launcher {
       throw new Error('No browser found. Set the browser path in Settings.');
     }
     fs.mkdirSync(dataDir, { recursive: true });
-    clearDevToolsPort(dataDir);
 
+    // With --remote-debugging-pipe the browser uses fds 3 (commands in) and 4
+    // (events out); pass them through as pipes only when a timezone override
+    // needs the DevTools channel. Otherwise keep stdio ignored.
+    const needsPipe = Boolean(profile.timezone);
     const child = spawn(browserPath, buildArgs(profile, dataDir), {
       cwd: path.dirname(browserPath),
       detached: false,
-      stdio: 'ignore',
+      stdio: needsPipe ? ['ignore', 'ignore', 'ignore', 'pipe', 'pipe'] : 'ignore',
     });
     this.running.set(profile.id, child);
     this.onChange();
 
     let devtools = null;
-    if (profile.timezone) {
-      attachOverrides(dataDir, profile)
-        .then((ws) => {
-          devtools = ws;
-          if (!this.running.has(profile.id)) ws.close();
+    if (needsPipe) {
+      attachOverrides(child.stdio[3], child.stdio[4], profile)
+        .then((transport) => {
+          devtools = transport;
+          if (!this.running.has(profile.id)) transport.close();
         })
         .catch((err) => console.error(`[${profile.name}] timezone override failed:`, err.message));
     }
